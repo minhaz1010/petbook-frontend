@@ -15,7 +15,6 @@ export const useCreatePost = () => {
     },
     onError: (error) => {
       toast.error(error.message)
-      console.log(error.message, 'error from hook');
     }
   });
 };

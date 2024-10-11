@@ -59,7 +59,6 @@ export const likeAPost = async(postId:string)=>{
       return null; 
       }
   } catch (error:any) {
-    console.log(error);
      if (error.response) {
       const errorData: IErrorResponse = error.response.data;
       console.error("Error creating post:", errorData.message, errorData.errorMessages);

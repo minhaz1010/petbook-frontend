@@ -15,7 +15,6 @@ export const postOptionsForStoryOrTip = (category?: string) => infiniteQueryOpti
   queryFn: ({ pageParam = 1 }) => fetchAllPosts({ pageParam, category }),
   initialPageParam: 1,
   getNextPageParam: (lastPage, allPages) => {
-    console.log(lastPage.data.totalPosts);
     const loadedPosts = allPages.reduce((total, page) => total + page.data.result.length, 0);
     return loadedPosts < lastPage.data.totalPosts ? allPages.length + 1 : undefined;
   },

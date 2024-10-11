@@ -100,7 +100,6 @@ export const likeAComment = async (commentId:string) =>{
   try{
    const response = await axiosInstance.patch(
       `/posts/comments/like/${commentId}`);
-   console.log(response,'response of a likeAComment');   
     if (response.data.success) {
       return response.data.data; 
     } else {
@@ -122,7 +121,6 @@ export const dislikeAComment = async (commentId:string) =>{
   try{
    const response = await axiosInstance.patch(
       `/posts/comments/dislike/${commentId}`);
-   console.log(response,'response of a likeAComment');   
     if (response.data.success) {
       return response.data.data; 
     } else {
