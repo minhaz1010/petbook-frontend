@@ -76,4 +76,5 @@ export interface IUSer {
   followings: string[]
   membership: string
   role: string
+  createdAt:date
 }
