@@ -7,7 +7,7 @@ import { Camera } from 'lucide-react';
 import TitleInput from './_components/TitleInput';
 import PostTypeSelector from './_components/PostTypeSelector';
 import PremiumSelector from './_components/PremiumSelector';
-import QuillEditor from './_components/QuillEditor';
+import QuillEditor from '../../../components/Shared/QuillEditor';
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import Loading from '@/components/Shared/Loading';
 import { jetbrains } from '@/config/font';

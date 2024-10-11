@@ -10,7 +10,7 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { IPost } from '@/types';
 import { postOptions } from '@/queryOptions/infiniteQueryOptionsForPost';
 import { useDebounce } from '@/hooks/post/useDebounce.hook';
-import { PostCard } from '../Home/PostCard';
+import { PostCard } from '../Shared/PostCard';
 
 const Post = () => {
   const [searchTerm, setSearchTerm] = useState('');
