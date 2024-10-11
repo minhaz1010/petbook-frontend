@@ -5,6 +5,15 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+.ql-editor {
+  min-height: 300px;
+  font-size: 16px;
+  padding: 20px; 
+}
+.ql-formats{
+  color: white;
+}
+
 
 @layer utilities {
   .text-balance {
