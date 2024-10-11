@@ -79,7 +79,6 @@ export default function ResponsiveEditor() {
       secure_url: result.info.secure_url,
       public_id: result.info.public_id
     }
-    console.log(newImage, 'new image')
     setImageData((prevData) => {
       if (!prevData) return [newImage]
       return [...prevData, newImage]
