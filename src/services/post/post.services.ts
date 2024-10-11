@@ -28,7 +28,7 @@ export  const createPost = async (postData:any)=>{
 }
 
 // NOTE: fetch all posts services
-interface PostsData {
+export interface PostsData {
   result: IPost[]
   totalPosts: number
 }
@@ -120,7 +120,6 @@ export const editASinglePost = async (payload:any)=>{
     const {postId,...body} = payload;
    const response = await axiosInstance.patch<ISuccessfulResponse<IPost>>(
       `/posts/${postId}`,body);
-    
     if (response.data.success) {
       return response.data.data; 
     } else {
@@ -160,3 +159,24 @@ export const deleteASinglePost = async (postId:string)=>{
 }
 
 
+export const getAllPost = async ()=>{
+  try{
+   const response = await axiosInstance.get<ISuccessfulResponse<PostsData>>(
+      `/posts`);
+    
+    if (response.data.success) {
+      return response.data.data; 
+    } else {
+      console.error("Failed to get all  post:", response.data.message);
+      return null; 
+    }
+  } catch (error: any) {
+    if (error.response) {
+      const errorData: IErrorResponse = error.response.data;
+      console.error("Error getting all post:", errorData.message, errorData.errorMessages);
+    } else {
+      console.error("An unexpected error occurred:", error.message);
+    }
+    return null; 
+  }
+}
