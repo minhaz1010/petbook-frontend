@@ -1,9 +1,10 @@
 "use server"
 
 import axiosInstance from "@/config/axiosInstance";
+import { ISuccessfulResponse, IUSer } from "@/types";
 
 export const detailsOfAUser = async () =>{
-  const response  = await axiosInstance.get("/users/me");
+  const response  = await axiosInstance.get<ISuccessfulResponse<IUSer>>("/users/me");
   return response.data;
 }
 
