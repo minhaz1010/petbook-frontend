@@ -37,7 +37,6 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
   const [showComments, setShowComments] = useState<boolean>(false);
   const [userMembership, setUserMembership] = useState<string>('REGULAR');
   const { userId } = useAuth();
-  // const router = useRouter();
   const pathName = usePathname()
   const isProfileRoute = pathName === '/profile';
 
@@ -51,7 +50,8 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
       }
     }
     fetchUserDetails();
-  }, []);
+
+  }, [userId]);
 
   const toggleComments = () => {
     if (userId) {
@@ -107,7 +107,7 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
 
   const handleFollow = () => {
     // Implement follow logic
-    console.log('Follow user:', post.author.userName);
+    console.log('Follow user: id ', post.author._id);
   };
 
   return (
@@ -124,9 +124,17 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
             <EditButton onEdit={handleEditPost} onDelete={handleDeletePost} />
           </div>
         ) : (
+
           <div className="absolute top-14 right-2 z-10">
-            <FollowButton onFollow={handleFollow} />
+            {
+              userId && (userId !== post.author.userId) && (
+                < FollowButton onFollow={handleFollow} />)
+            }
+            {/* {
+              userId && user_id && userId !== user_id && (<FollowButton onFollow={handleFollow} />)
+            } */}
           </div>
+
         )
       }
 
