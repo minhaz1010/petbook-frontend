@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { jetbrains } from '@/config/font'
 
-export function PostCardSkeleton() {
+function PostCardSkeleton() {
   return (
     <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 transition-all duration-300 shadow-lg shadow-black/20 ${jetbrains.className}`}>
       {/* Premium/Free Badge Skeleton */}
