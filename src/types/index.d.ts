@@ -22,6 +22,8 @@ export interface IAuthor {
   userId:string;
   email:string;
   imageURL: string;
+  followers:string[];
+  followings:string[]
 }
 
 export interface IImageOption {
