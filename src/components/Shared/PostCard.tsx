@@ -39,6 +39,9 @@ import QuillEditor from "@/components/Shared/QuillEditor";
 import { useEditAPost } from "@/hooks/post/useEditAPost.hook";
 import Loading from "./Loading";
 import { useDeleteAPost } from "@/hooks/post/useDeleteAPost.hook";
+import { useUserFollower } from "@/hooks/user/useUserFollower";
+import { UnfollowButton } from "../Home/UnfollowButton";
+import { useUserUnfollow } from "@/hooks/user/useUserUnfollower";
 
 export const PostCard: FC<{ post: IPost }> = ({ post }) => {
   const { mutate: handleLikeAPost } = useLikeAPost();
@@ -51,6 +54,8 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
   const { mutate: handleEditAComment } = useEditAComment();
   const { mutate: handleEditAPost, isPending } = useEditAPost();
   const { mutate: handleDeleteAPost } = useDeleteAPost();
+  const { mutate: handleFollowAUser } = useUserFollower();
+  const { mutate: handleUnfollowAUser } = useUserUnfollow();
 
   const [showComments, setShowComments] = useState<boolean>(false);
   const [userMembership, setUserMembership] = useState<string>('REGULAR');
@@ -63,18 +68,19 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
   const [editTitle, setEditTitle] = useState(post.title);
   const [editStoryType, setEditStoryType] = useState<"TIP" | "STORY">(post.postType);
   const [editIsPremium, setEditIsPremium] = useState(post.isPremium);
-
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const data = await detailsOfAUser();
         setUserMembership(data.data.membership);
+        setIsFollowing(post.author.followers.includes(data.data._id));
       } catch (error) {
         console.error(error)
       }
     }
     fetchUserDetails();
-  }, [userId]);
+  }, [userId, post.author.followers]);
 
   const toggleComments = () => {
     if (userId) {
@@ -150,13 +156,18 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
     if (confirm("Are you sure you want to delete this Post?")) {
       handleDeleteAPost(post._id)
     }
-    console.log('Delete post:', post._id);
   };
 
   const handleFollow = () => {
-    // Implement follow logic
-    console.log('Follow user: id ', post.author._id);
+    handleFollowAUser(post.author._id);
+    setIsFollowing(true);
   };
+
+  const handleUnfollow = () => {
+    handleUnfollowAUser(post.author._id)
+
+    setIsFollowing(false);
+  }
 
   return (
     <>
@@ -177,7 +188,10 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
             <div className="absolute top-14 right-2 z-10">
               {
                 userId && (userId !== post.author.userId) && (
-                  <FollowButton onFollow={handleFollow} />
+                  !isFollowing
+                    ? < FollowButton onFollow={handleFollow} />
+                    : <UnfollowButton onUnfollow={handleUnfollow} />
+
                 )
               }
             </div>
