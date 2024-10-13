@@ -31,8 +31,8 @@ Pet Care Tips & Stories is a comprehensive web application designed to connect p
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/pet-care-tips-stories-frontend.git
-   cd pet-care-tips-stories-frontend
+   https://github.com/minhaz1010/petbook-frontend.git
+   cd petbook-frontend
    ```
 
 2. Install dependencies:
