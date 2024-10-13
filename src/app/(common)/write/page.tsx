@@ -12,6 +12,7 @@ import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import Loading from '@/components/Shared/Loading';
 import { jetbrains } from '@/config/font';
 import { useCreatePost } from '@/hooks/post/useCreatePost.hook';
+import { useRouter } from 'next/navigation';
 
 interface CloudinaryResult {
   public_id: string;
@@ -31,6 +32,7 @@ export default function ResponsiveEditor() {
   const [imageData, setImageData] = React.useState<CloudinaryResult[] | null>();
   const [error, setError] = React.useState<string | null>(null);
   const { userId } = useAuth();
+  const router = useRouter();
   const { mutate: handleCreatePost, isPending } = useCreatePost();
 
   const validateForm = useCallback(() => {
@@ -61,6 +63,7 @@ export default function ResponsiveEditor() {
     handleCreatePost(finalPostData, {
       onSuccess: () => {
         setImageData(null);
+        router.push("/")
         setPostData({
           title: '',
           content: '',
@@ -91,7 +94,7 @@ export default function ResponsiveEditor() {
   const isFormValid = postData.title.trim() && postData.content.trim() && imageData && !error;
 
   return (
-    <div className={`min-h-screen w-full p-4 md:p-6 lg:p-8 relative ${jetbrains.className}`}>
+    <div className={`min-h-screen sm:-mt-36 md:mt-0 w-full p-4 md:p-6 lg:p-8 relative ${jetbrains.className}`}>
       <div className="max-w-4xl bg-white/5 backdrop-blur-md shadow-lg rounded-lg p-6 mx-auto">
         <h1 className="text-3xl font-bold text-white mb-6">Create a New Post</h1>
 
@@ -105,7 +108,7 @@ export default function ResponsiveEditor() {
           value={postData.title}
           onChange={(title) => setPostData({ ...postData, title })}
         />
-        <div className='flex'>
+        <div className='flex flex-col'>
           <PostTypeSelector
             postType={postData.postType}
             petType={postData.petType}

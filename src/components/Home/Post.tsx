@@ -30,7 +30,6 @@ const Post = () => {
   }, []);
 
   const handleSort = useCallback((value: string) => {
-    console.log(value, 'value')
     setSortOption(value);
   }, []);
 
@@ -43,7 +42,8 @@ const Post = () => {
     if (debouncedSearchTerm) {
       result = result.filter(post =>
         post.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        post.content.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+        post.content.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        post.author.userName.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
       );
     }
 
@@ -72,7 +72,7 @@ const Post = () => {
         <div className="relative flex-grow">
           <Input
             type="text"
-            placeholder="Search posts..."
+            placeholder="Search posts or authors..."
             value={searchTerm}
             onChange={handleSearch}
             className="pl-10 text-white"
