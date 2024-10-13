@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import FollowingsList from './_components/FollowingList'
+import Loading from '@/components/Shared/Loading'
 
 const page = () => {
   return (
-    <FollowingsList />
+    <Suspense fallback={<Loading />}>
+      <FollowingsList />
+    </Suspense>
   )
 }
 
