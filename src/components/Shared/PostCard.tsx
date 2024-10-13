@@ -80,16 +80,15 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
   const [editIsPremium, setEditIsPremium] = useState(post.isPremium);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [userMongodbId, setUserMongodbId] = useState("");
-  const [totalLikes, setTotalLikes] = useState(post.likes);
-  const [totalDisLikes, setTotalDislikes] = useState(post.dislikes)
-  const [likedByStatus, setLikedByStatus] = useState<boolean | null>(null);
-  const [dislikeByStatus, setDislikedByStatus] = useState<boolean | null>(null);
+  const [likeCount, setLikeCount] = useState(post.likes);
+  const [dislikeCount, setDislikeCount] = useState(post.dislikes);
+  const [userAction, setUserAction] = useState<'like' | 'dislike' | null>(null);
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const data = await detailsOfAUser();
         if (data) {
-          console.log(data, 'data of current user')
           setUserMembership(data?.data.membership);
           setIsFollowing(post.author.followers.includes(data.data._id));
           setUserMongodbId(data.data._id)
@@ -109,36 +108,119 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
     }
   };
 
+  useEffect(() => {
+    if (post.likedBy.includes(userMongodbId)) {
+      setUserAction('like');
+    } else if (post.dislikedBy.includes(userMongodbId)) {
+      setUserAction('dislike');
+    } else {
+      setUserAction(null);
+    }
+    setLikeCount(post.likes);
+    setDislikeCount(post.dislikes);
+  }, [post.likedBy, post.dislikedBy, userMongodbId, post.likes, post.dislikes]);
 
   const handleLike = useCallback(() => {
-    if (post.likedBy.includes(userMongodbId)) {
-      console.log('like chilo aage theke')
-      setLikedByStatus(false);
-      setTotalLikes(post.likes - 1)
-    } else {
-      console.log('like chilo naa aage theke')
-      setLikedByStatus(true)
-      setTotalLikes(post.likes + 1)
-    }
-    if (!isLiking && userId) {
+    if (!userId) return;
+    let count = 0;
+    setLikeCount((prevLikes) => {
+      let newLikes = prevLikes;
+      if (userAction === 'like') {
+        // User is unliking
+        newLikes = Math.max(0, prevLikes - 1);
+        setUserAction(null);
+      } else {
+
+        // User is liking
+        newLikes = Math.max(0, prevLikes + 1);
+        if (userAction === 'dislike' && count === 0) {
+          // If previously disliked, remove the dislike
+          setDislikeCount((prevDislikes) => {
+            if (count === 0) {
+              count++;
+              return prevDislikes - 1;
+            }
+            return prevDislikes
+          });
+        }
+        setUserAction('like');
+      }
+      return newLikes;
+    });
+
+    if (!isLiking) {
       handleLikeAPost(post._id);
     }
-  }, [handleLikeAPost, post._id, isLiking, userId, userMongodbId, post.likedBy, post.likes]);
+  }, [userId, userAction, isLiking, handleLikeAPost, post._id]);
 
   const handleDislike = useCallback(() => {
-    if (post.dislikedBy.includes(userMongodbId)) {
-      console.log('dislike chilo aage theke')
-      setDislikedByStatus(false);
-      setTotalDislikes(post.dislikes - 1)
-    } else {
-      console.log('dislike chilo naa aage theke')
-      setDislikedByStatus(true)
-      setTotalDislikes(post.dislikes + 1)
-    }
-    if (!isDisliking && userId) {
+    if (!userId) return;
+    let count = 0;
+    setDislikeCount((prevDislikes) => {
+      let newDislikes = prevDislikes;
+      if (userAction === 'dislike') {
+
+        // User is un-disliking
+        newDislikes = Math.max(0, prevDislikes - 1);
+        setUserAction(null);
+      } else {
+        // User is disliking
+        newDislikes = Math.max(0, prevDislikes + 1);
+        if (userAction === 'like' && count === 0) {
+          // If previously liked, remove the like
+          setLikeCount((prevLikes) => {
+            if (count === 0) {
+              count++;
+              return prevLikes - 1
+            }
+            return prevLikes
+          });
+        }
+        setUserAction('dislike');
+      }
+      return newDislikes;
+    });
+
+    if (!isDisliking) {
       handleDislikeAPost(post._id);
     }
-  }, [handleDislikeAPost, post._id, isDisliking, userId, post.dislikedBy, post.dislikes, userMongodbId]);
+  }, [userId, userAction, isDisliking, handleDislikeAPost, post._id]);
+
+
+
+
+
+
+  // const handleLike = useCallback(() => {
+  //   if (post.likedBy.includes(userMongodbId)) {
+  //     setLikedByStatus(false);
+  //     setTotalLikes(post.likes - 1)
+  //   } else {
+  //     console.log('like chilo naa aage theke')
+  //     setDislikedByStatus(false)
+  //     setLikedByStatus(true)
+  //     setTotalLikes(post.likes + 1)
+  //   }
+  //   if (!isLiking && userId) {
+  //     handleLikeAPost(post._id);
+  //   }
+  // }, [handleLikeAPost, post._id, isLiking, userId, userMongodbId, post.likedBy, post.likes]);
+
+  // const handleDislike = useCallback(() => {
+  //   if (post.dislikedBy.includes(userMongodbId)) {
+  //     console.log('dislike chilo aage theke')
+  //     setDislikedByStatus(false);
+  //     setTotalDislikes(post.dislikes - 1)
+  //   } else {
+  //     console.log('dislike chilo naa aage theke')
+  //     setLikedByStatus(false)
+  //     setDislikedByStatus(true)
+  //     setTotalDislikes(post.dislikes + 1)
+  //   }
+  //   if (!isDisliking && userId) {
+  //     handleDislikeAPost(post._id);
+  //   }
+  // }, [handleDislikeAPost, post._id, isDisliking, userId, post.dislikedBy, post.dislikes, userMongodbId]);
 
   const handleAddComment = useCallback((content: string) => {
     const payload = {
@@ -368,37 +450,30 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
 
         <CardFooter className="flex flex-wrap justify-between border-t border-gray-700/50 p-2 sm:p-3">
           <div className="flex space-x-2 mb-2 sm:mb-0">
+
             <Button
               variant="ghost"
               onClick={handleLike}
-              disabled={isLiking}
-              className={`text-teal-500 hover:bg-teal-800
-                  ${!likedByStatus
-                  ? post.likedBy.includes(userMongodbId) && 'bg-blue-800'
-                  : likedByStatus && 'bg-blue-800'}
-                  ${!userId && 'cursor-not-allowed'}`}
-              title={`${!userId && 'please login'}`}
+              disabled={isLiking || isDisliking}
+              className={`text-teal-500 hover:bg-teal-800 ${userAction === 'like' ? 'bg-blue-800' : ''
+                } ${!userId && 'cursor-not-allowed'}`}
+              title={!userId ? 'Please login' : ''}
             >
               <ThumbsUp className="h-4 w-4 mr-1" />
-              {totalLikes}
-              {/* {post.likes} */}
-              {/* {post.likedBy.includes(userMongodbId) ? post.likedBy.length : post.likedBy.length + 1} */}
+              {likeCount}
             </Button>
             <Button
               variant="ghost"
               onClick={handleDislike}
-              disabled={isDisliking}
-              className={`text-teal-500 hover:bg-teal-800
-                                  ${!dislikeByStatus
-                  ? post.dislikedBy.includes(userMongodbId) && 'bg-red-800'
-                  : dislikeByStatus && 'bg-red-800'}
-                ${!userId && 'cursor-not-allowed'}`}
-              title={`${!userId && 'please login'}`}
+              disabled={isLiking || isDisliking}
+              className={`text-teal-500 hover:bg-teal-800 ${userAction === 'dislike' ? 'bg-red-800' : ''
+                } ${!userId && 'cursor-not-allowed'}`}
+              title={!userId ? 'Please login' : ''}
             >
               <ThumbsDown className="h-4 w-4 mr-1" />
-              {totalDisLikes}
-              {/* {post.dislikes} */}
+              {dislikeCount}
             </Button>
+
             <Button
               variant="ghost"
               onClick={toggleComments}
