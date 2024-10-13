@@ -33,7 +33,7 @@ export interface PostsData {
   totalPosts: number
 }
 
-const POSTS_PER_PAGE = 4;
+const POSTS_PER_PAGE = 7;
 
 export const fetchAllPosts = async ({ pageParam = 1, category }: { pageParam?: number; category?: string }): Promise<ISuccessfulResponse<PostsData>> => {
   const { data } = await axiosInstance.get<ISuccessfulResponse<PostsData>>('/posts', {

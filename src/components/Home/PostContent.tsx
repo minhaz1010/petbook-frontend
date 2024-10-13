@@ -31,18 +31,18 @@ export const PostContent: React.FC<PostContentProps> = ({ content, isPremium, us
       hasMore = words.length > 100;
     } else {
       if (isExpanded) {
-        contentToShow = isPremium && userMembership !== 'PREMIUM' ? words.slice(0, 40).join(' ') : content;
-        hasMore = isPremium && userMembership !== 'PREMIUM' && words.length > 40;
+        contentToShow = isPremium && userMembership !== 'PREMIUM' ? words.slice(0, 30).join(' ') : content;
+        hasMore = isPremium && userMembership !== 'PREMIUM' && words.length > 30;
       } else {
-        contentToShow = words.slice(0, 20).join(' ');
-        hasMore = words.length > 20;
+        contentToShow = words.slice(0, 15).join(' ');
+        hasMore = words.length > 15;
       }
     }
 
     return (
       <div className="text-gray-200">
         {parse(contentToShow + (hasMore && !isExpanded ? " ... " : ""))}
-        {hasMore && (
+        {(hasMore || isExpanded) && (
           <Button
             variant="link"
             onClick={() => {
@@ -56,7 +56,7 @@ export const PostContent: React.FC<PostContentProps> = ({ content, isPremium, us
             {isExpanded ? 'Show Less' : 'Read More'}
           </Button>
         )}
-        {isExpanded && isPremium && userMembership !== 'PREMIUM' && words.length > 40 && !isProfileRoute && !isAdminRoute && (
+        {isExpanded && isPremium && userMembership !== 'PREMIUM' && words.length > 30 && !isProfileRoute && !isAdminRoute && (
           <div className="mt-2 p-2 bg-yellow-900/30 border border-yellow-500/50 rounded-md">
             <p className="text-yellow-300 flex items-center">
               <Lock className="w-4 h-4 mr-2" />
