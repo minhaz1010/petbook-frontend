@@ -10,8 +10,8 @@ interface PostTypeSelectorProps {
 
 export default function PostTypeSelector({ postType, petType, onPostTypeChange, onPetTypeChange }: PostTypeSelectorProps) {
   return (
-    <div className='flex w-3/5  gap-20'>
-      <div className='w-1/4 inline'>
+    <div className='flex    gap-20'>
+      <div className=' w-full block md:inline'>
         <label className="block mb-2 text-gray-300">Post Type</label>
         <Select value={postType} onValueChange={onPostTypeChange}>
           <SelectTrigger className="w-full text-white">
@@ -24,7 +24,7 @@ export default function PostTypeSelector({ postType, petType, onPostTypeChange, 
         </Select>
       </div>
 
-      <div className='w-1/4' >
+      <div className=' w-full block md:inline' >
         <label className="block mb-2 text-gray-300">Pet Type</label>
         <Select value={petType} onValueChange={onPetTypeChange}>
           <SelectTrigger className="w-full text-white">

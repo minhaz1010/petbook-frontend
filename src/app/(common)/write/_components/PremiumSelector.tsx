@@ -7,7 +7,7 @@ interface PremiumSelectorProps {
 
 export default function PremiumSelector({ isPremium, onChange }: PremiumSelectorProps) {
   return (
-    <div className="mb-4">
+    <div className="mb-4 ">
       <label className="block mb-2 text-gray-300">Is your content premium?</label>
       <Select value={isPremium ? "Yes" : "No"} onValueChange={(value) => onChange(value === "Yes")}>
         <SelectTrigger className=" text-white">
