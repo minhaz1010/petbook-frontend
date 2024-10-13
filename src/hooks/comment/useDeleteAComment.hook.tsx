@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { deleteCommentsOfAPost } from "@/services/comment/comment.services";
 import { getQueryClient } from "@/utils/getQueryClient"
 import { useMutation } from "@tanstack/react-query"
