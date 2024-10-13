@@ -7,12 +7,14 @@ import React, { Suspense } from 'react'
 import UserProfile from './_components/UserProfile';
 import Loading from '@/components/Shared/Loading';
 import User from './_components/User';
+import { IUSer } from '@/types';
 
 const page = async () => {
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(userOptions);
   const userDetails = await detailsOfAUser();
-  const { posts, ...userInfo } = userDetails.data;
+
+  const { posts, ...userInfo } = userDetails?.data as IUSer;
   return (
     <div>
       <UserProfile {...userInfo} />

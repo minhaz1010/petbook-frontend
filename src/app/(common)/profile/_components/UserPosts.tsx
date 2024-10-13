@@ -10,7 +10,7 @@ interface UserPostsProps {
   posts: IPost[]
 }
 
-const POSTS_PER_PAGE = 2
+const POSTS_PER_PAGE = 4
 
 export default function UserPosts({ posts }: UserPostsProps) {
   const [currentPage, setCurrentPage] = useState(1)
@@ -30,7 +30,7 @@ export default function UserPosts({ posts }: UserPostsProps) {
 
   return (
     <div className="space-y-6 container mx-auto size-full lg:size-[40%]">
-      <h2 className="text-2xl font-bold text-center text-white mb-4">User Posts</h2>
+      <h2 className="text-2xl font-bold text-center text-[#00c9c8] mb-4">Total Posts : {posts.length}</h2>
       {currentPosts.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}

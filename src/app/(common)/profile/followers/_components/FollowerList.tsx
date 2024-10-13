@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { protest_strike } from '@/config/font';
+import { oswald } from '@/config/font';
 import { detailsOfAUser } from '@/services/user/user.services';
 import { auth } from '@clerk/nextjs/server';
 import { UserPlus, UserX, Users } from 'lucide-react';
@@ -12,7 +12,7 @@ const FollowersList = async () => {
 
   return (
     <div className="min-h-screen   bg-black text-white p-4 sm:p-6 md:p-8 lg:p-12">
-      <Card className={`${protest_strike.className} max-w-4xl mx-auto bg-gray-900 border-gray-800 overflow-hidden shadow-2xl`}>
+      <Card className={`${oswald.className} max-w-4xl mx-auto bg-gray-900 border-gray-800 overflow-hidden shadow-2xl`}>
         <CardHeader className="bg-gradient-to-r from-purple-200 to-blue-200 p-6">
           <CardTitle className="text-3xl sm:text-4xl md:text-5xl font-bold text-center flex items-center justify-center gap-4">
             <Users className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />

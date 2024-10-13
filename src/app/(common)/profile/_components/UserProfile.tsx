@@ -2,9 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { protest_strike } from "@/config/font"
+import { oswald } from "@/config/font"
 import { IUSer } from "@/types"
-import { CalendarIcon, MailIcon } from "lucide-react"
+import { CalendarIcon, MailIcon, Users } from "lucide-react"
+import Link from "next/link"
 
 type UserInfoProps = Partial<IUSer>
 
@@ -20,7 +21,7 @@ export default function UserProfile({
   createdAt,
 }: UserInfoProps) {
   return (
-    <div className={` w-full ${protest_strike.className}  p-4 md:p-8 bg-[#000000] bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:30px_30px]`}>
+    <div className={` w-full ${oswald.className}  p-4 md:p-8 bg-[#000000] bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:30px_30px]`}>
       <Card className="max-w-3xl mx-auto bg-black/50 backdrop-blur-md border-gray-800">
         <CardHeader className="flex flex-col items-center space-y-4">
           <Avatar className="w-24 h-24 border-2 text-gray-300 border-primary">
@@ -49,13 +50,25 @@ export default function UserProfile({
           </div>
           <Separator className="my-4" />
           <div className="flex justify-around text-center">
-            <div>
+            <div className="flex justify-center flex-col items-center space-x-2 ">
               <p className="text-xl font-semibold text-gray-300">{followers?.length}</p>
-              <p className="text-muted-foreground text-gray-300">Followers</p>
+              <Link
+                href="/profile/followers"
+                className="text-green-500 hover:text-green-600 flex items-center space-x-1 underline hover:no-underline transition duration-200 ease-in-out"
+              >
+                <Users className="w-4 h-4" />
+                <span>Followers</span>
+              </Link>
             </div>
-            <div>
+            <div className="flex justify-center flex-col items-center space-x-2 ">
               <p className="text-xl font-semibold text-gray-300">{followings?.length}</p>
-              <p className="text-muted-foreground text-gray-300">Following</p>
+              <Link
+                href="/profile/followings"
+                className="text-green-500 hover:text-green-600 flex items-center space-x-1 underline hover:no-underline transition duration-200 ease-in-out"
+              >
+                <Users className="w-4 h-4" />
+                <span>Followings</span>
+              </Link>
             </div>
           </div>
         </CardContent>
