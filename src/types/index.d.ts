@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ISuccessfulResponse<T> {
   success: boolean;
   statusCode: number;
@@ -22,8 +23,8 @@ export interface IAuthor {
   userId:string;
   email:string;
   imageURL: string;
-  followers:string[];
-  followings:string[]
+  followers:any[];
+  followings:any[]
 }
 
 export interface IImageOption {
@@ -41,6 +42,7 @@ export interface IComment {
   likes: number;
   dislikes: number;
 }
+
 
 
 export interface IPost {
@@ -66,6 +68,21 @@ export interface IComment {
   post:string
 }
 
+export interface IFollowers {
+  _id:string;
+  userId:string;
+  userName:string;
+  email:string;
+  imageURL:string;
+}
+export interface IFollowings {
+  _id:string;
+  userId:string;
+  userName:string;
+  email:string;
+  imageURL:string;
+}
+
 export interface IUSer {
   _id: string
   userId: string
@@ -74,9 +91,19 @@ export interface IUSer {
   email: string
   imageURL: string
   posts: IPost[]
-  followers: string[]
-  followings: string[]
+  followers: IFollowers[]
+  followings: IFollowings[]
   membership: string
   role: string
   createdAt:date
+}
+
+export interface IPayment {
+  userMongodbId:IUSer;
+  userId: string;
+  month: 1 | 3 | 6;
+  price: 200 | 500 | 1000;
+  status: "PAID" | "FAILED";
+  startedSubScriptionAt?: string;
+  endSubScriptionAt?: string;
 }
