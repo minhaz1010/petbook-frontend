@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className={` sticky top-0 z-50 ${oswald.className}`}>
+    <nav className={` overflow-x-hidden sticky top-0 z-50 ${oswald.className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -210,9 +210,9 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Navigation */}
       <div
-        className={`lg:hidden transform transition-all duration-300 ease-in-out ${isOpen
+        className={`lg:hidden transform transition-all  duration-300 ease-in-out ${isOpen
           ? "opacity-100 translate-y-0"
-          : "opacity-0 -translate-y-full pointer-events-none"
+          : "opacity-0 -translate-y-full pointer-events-none h-16"
           }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg rounded-b-lg">
