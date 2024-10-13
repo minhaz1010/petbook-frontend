@@ -34,7 +34,9 @@ export const Comments: FC<CommentsProps> = ({
     const userDetails = async () => {
       try {
         const data = await detailsOfAUser();
-        setUserIdOfCurrentUser(data.data._id);
+        if (data) {
+          setUserIdOfCurrentUser(data?.data._id);
+        }
       } catch (error) {
         console.error(error)
       }

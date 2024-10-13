@@ -4,8 +4,7 @@ import { jetbrains } from '@/config/font'
 
 function PostCardSkeleton() {
   return (
-    <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 transition-all duration-300 shadow-lg shadow-black/20 ${jetbrains.className}`}>
-      {/* Premium/Free Badge Skeleton */}
+    <Card className={`mb-4  relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 transition-all duration-300 shadow-lg shadow-black/20 ${jetbrains.className}`}>
       <div className="absolute top-2 right-2 z-10">
         <Skeleton className="h-8 w-24 rounded-full bg-gray-700" />
       </div>
@@ -42,7 +41,7 @@ function PostCardSkeleton() {
 }
 const CardLoader = () => {
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-4">
       {[1, 2, 3].map((n) => (
         <PostCardSkeleton key={n} />
       ))}

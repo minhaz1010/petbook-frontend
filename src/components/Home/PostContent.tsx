@@ -15,29 +15,34 @@ export const PostContent: React.FC<PostContentProps> = ({ content, isPremium, us
   const [isExpanded, setIsExpanded] = useState(false);
   const pathName = usePathname();
   const isProfileRoute = pathName === '/profile';
+  const isAdminRoute = pathName === "/admin";
 
   const renderContent = () => {
-    if (isProfileRoute) {
-      // Show full content without restrictions on the profile route
-      return <div className="text-gray-200">{parse(content)}</div>;
-    }
+    // CHANGE: Removed the immediate return for profile and admin routes
+    // if (isProfileRoute || isAdminRoute) {
+    //   return <div className="text-gray-200">{parse(content)}</div>;
+    // }
 
     const words = content.split(' ');
     let contentToShow: string;
     let hasMore = false;
-
-    if (isExpanded) {
-      contentToShow = isPremium && userMembership !== 'PREMIUM' ? words.slice(0, 40).join(' ') : content;
-      hasMore = isPremium && userMembership !== 'PREMIUM' && words.length > 40;
+    if (isProfileRoute || isAdminRoute) {
+      contentToShow = isExpanded ? content : words.slice(0, 60).join(' ');
+      hasMore = words.length > 100;
     } else {
-      contentToShow = words.slice(0, 20).join(' ');
-      hasMore = words.length > 20;
+      if (isExpanded) {
+        contentToShow = isPremium && userMembership !== 'PREMIUM' ? words.slice(0, 40).join(' ') : content;
+        hasMore = isPremium && userMembership !== 'PREMIUM' && words.length > 40;
+      } else {
+        contentToShow = words.slice(0, 20).join(' ');
+        hasMore = words.length > 20;
+      }
     }
 
     return (
       <div className="text-gray-200">
-        {parse(contentToShow + (hasMore ? " ... " : ""))}
-        {(hasMore || isExpanded) && (
+        {parse(contentToShow + (hasMore && !isExpanded ? " ... " : ""))}
+        {hasMore && (
           <Button
             variant="link"
             onClick={() => {
@@ -51,7 +56,7 @@ export const PostContent: React.FC<PostContentProps> = ({ content, isPremium, us
             {isExpanded ? 'Show Less' : 'Read More'}
           </Button>
         )}
-        {isExpanded && isPremium && userMembership !== 'PREMIUM' && words.length > 40 && (
+        {isExpanded && isPremium && userMembership !== 'PREMIUM' && words.length > 40 && !isProfileRoute && !isAdminRoute && (
           <div className="mt-2 p-2 bg-yellow-900/30 border border-yellow-500/50 rounded-md">
             <p className="text-yellow-300 flex items-center">
               <Lock className="w-4 h-4 mr-2" />
