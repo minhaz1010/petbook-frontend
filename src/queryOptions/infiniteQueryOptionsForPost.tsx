@@ -8,7 +8,8 @@ export const postOptions = infiniteQueryOptions({
     const loadedPosts = allPages.reduce((total, page) => total + page.data.result.length, 0);
     return loadedPosts < lastPage.data.totalPosts ? allPages.length + 1 : undefined;
   },
-  refetchInterval: 3 * 60 * 1000
+  refetchInterval: 3 * 60 * 1000,
+  refetchOnMount: true
 })
 export const postOptionsForStoryOrTip = (category?: string) => infiniteQueryOptions({
   queryKey: ["POSTS", category],
@@ -18,5 +19,6 @@ export const postOptionsForStoryOrTip = (category?: string) => infiniteQueryOpti
     const loadedPosts = allPages.reduce((total, page) => total + page.data.result.length, 0);
     return loadedPosts < lastPage.data.totalPosts ? allPages.length + 1 : undefined;
   },
-  refetchInterval: 3 * 60 * 1000
+  refetchInterval: 3 * 60 * 1000,
+  refetchOnMount: true
 })
