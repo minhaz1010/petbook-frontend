@@ -14,7 +14,6 @@
 //     },
 //   });
 // };
-
 import { likeAPost } from "@/services/post/post.services";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { IPost } from "@/types";
