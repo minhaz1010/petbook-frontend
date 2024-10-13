@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pet Care Tips & Stories - Frontend
 
-## Getting Started
+## 🐾 Project Overview
 
-First, run the development server:
+Pet Care Tips & Stories is a comprehensive web application designed to connect pet owners, share valuable pet care advice, and foster a community of animal lovers. This repository contains the front-end code for the project, built with modern web technologies to ensure a responsive, interactive, and user-friendly experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Technologies Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Next.js ](https://nextjs.org/) with App Router for efficient, server-side rendered React applications
+- [TypeScript](https://www.typescriptlang.org/) for type-safe code
+- [Shadcn UI](https://ui.shadcn.com/) for beautiful, customizable UI components
+- [Clerk](https://clerk.dev/) for secure authentication with role based configuration
+- [React Query](https://react-query.tanstack.com/) for efficient server state management and hydration
+- [Axios](https://axios-http.com/) for HTTP requests
+- [React Quill](https://github.com/zenoamaro/react-quill) as a rich text editor for content creation
+- [Cloudinary](https://cloudinary.com/) for image upload and management
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📋 Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- User authentication and profile management
+- Create, read, update, and delete pet care tips and stories
+- Rich text editing for content creation
+- Image upload functionality
+- Infinite scrolling for content feeds
+- Responsive design for optimal viewing on all devices
+- Server-side rendering and hydration for improved performance
+- Advanced search and filtering options
+**(useDebounce effect)**
 
-## Learn More
+## 🛠 Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/pet-care-tips-stories-frontend.git
+   cd pet-care-tips-stories-frontend
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Install dependencies:
+   ```
+   npm install
+   ```
+   or
+   ```
+   bun install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```
 
-## Deploy on Vercel
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory and add the following variables:
+   ```
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_SECRET_KEY=your_clerk_secret_key
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   BASE_URL= 
+   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+   NEXT_PUBLIC_API_URL=your_backend_api_url
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Run the development server:
+   ```
+   npm run dev
+   ```
+   or
+   ```
+   yarn dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## 🌟 Key Features Explained
+
+### Server-Side Rendering and Hydration
+
+I have leveraged Next.js  App Router for efficient server-side rendering. This approach, combined with React Query's hydration capabilities, ensures fast initial page loads and smooth client-side navigation.
+
+### Infinite Query
+
+Implemented using React Query's `useInfiniteQuery`, this feature allows for seamless loading of content as users scroll, enhancing the browsing experience without overwhelming the server or the client.
+
+### Rich Text Editing
+
+React Quill is integrated to provide a powerful, user-friendly interface for creating and editing pet care tips and stories. This ensures that content creators can easily format their posts and include various media types.
+
+### Responsive Design
+
+The application is built with a mobile-first approach, ensuring a consistent and optimal user experience across devices of all sizes. I have used Tailwind CSS for efficient, responsive styling.
+
+### TypeScript Integration
+
+TypeScript is used throughout the project to ensure type safety.
+
+
+
+
+---
+
+Built with ❤️ for pets and their humans
