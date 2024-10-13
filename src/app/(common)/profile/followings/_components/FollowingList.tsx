@@ -1,17 +1,18 @@
+"use client"
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { oswald } from '@/config/font';
-import { auth } from '@clerk/nextjs/server';
-import { detailsOfAUser } from '@/services/user/user.services';
 import { UserPlus, UserX, Users } from 'lucide-react';
+import { useFollowingList } from '@/hooks/user/useFollowingList.hook';
+import { useAuth } from '@clerk/nextjs';
 
-const FollowingsList = async () => {
-  const { userId } = auth();
-  const response = userId ? await detailsOfAUser() : null;
+const FollowingsList = () => {
+  const { userId } = useAuth();
+  const { data: response } = useFollowingList()
 
   return (
-    <Card className={`${oswald.className} bg-gray-900  mt-11 max-w-4xl container mx-auto border-gray-800 overflow-hidden shadow-2xl`}>
+    <Card className={`${oswald.className} bg-gray-900 mt-11 max-w-4xl container mx-auto border-gray-800 overflow-hidden shadow-2xl`}>
       <CardHeader className="bg-gradient-to-r from-purple-200 to-blue-200 p-6">
         <CardTitle className="text-2xl sm:text-3xl md:text-5xl font-bold text-black flex items-center justify-center gap-3">
           <Users className="w-6 h-6 sm:w-8 sm:h-8" />
@@ -22,16 +23,12 @@ const FollowingsList = async () => {
         {!userId ? (
           <div className="bg-gray-800 rounded-lg p-6 text-center animate-pulse">
             <UserX className="w-12 h-12 mx-auto mb-3 text-red-500" />
-            <p className="text-xl sm:text-2xl font-light text-gray-300">
-              Please Login to See Your Followings
-            </p>
+            <p className="text-xl sm:text-2xl font-light text-gray-300">Please Login to See Your Followings</p>
           </div>
         ) : response?.data.followings.length === 0 ? (
           <div className="bg-gray-800 rounded-lg p-6 text-center">
             <UserPlus className="w-12 h-12 mx-auto mb-3 text-yellow-400" />
-            <p className="text-xl sm:text-2xl font-light text-gray-300">
-              You are not following anyone yet
-            </p>
+            <p className="text-xl sm:text-2xl font-light text-gray-300">You are not following anyone yet</p>
             <p className="mt-2 text-sm text-gray-400">Start exploring to find people to follow!</p>
           </div>
         ) : (

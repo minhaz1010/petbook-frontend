@@ -1,14 +1,15 @@
+"use client"
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { oswald } from '@/config/font';
-import { detailsOfAUser } from '@/services/user/user.services';
-import { auth } from '@clerk/nextjs/server';
 import { UserPlus, UserX, Users } from 'lucide-react';
+import { useAuth } from '@clerk/nextjs';
+import { useFollowingList } from '@/hooks/user/useFollowingList.hook';
 
-const FollowersList = async () => {
-  const { userId } = auth();
-  const response = userId ? await detailsOfAUser() : null;
+const FollowersList = () => {
+  const { userId } = useAuth();
+  const { data: response } = useFollowingList();
 
   return (
     <div className="min-h-screen   bg-black text-white p-4 sm:p-6 md:p-8 lg:p-12">
