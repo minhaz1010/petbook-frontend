@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { FC, useState, useCallback, useEffect } from "react";
@@ -5,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Share2, ThumbsDown, ThumbsUp, Trash, Edit } from "lucide-react";
+import { MessageCircle, ThumbsDown, ThumbsUp, Trash, Edit } from "lucide-react";
 import Image from 'rc-image';
 import 'rc-image/assets/index.css';
 import { IPost } from "@/types";
@@ -39,29 +40,38 @@ import QuillEditor from "@/components/Shared/QuillEditor";
 import { useEditAPost } from "@/hooks/post/useEditAPost.hook";
 import Loading from "./Loading";
 import { useDeleteAPost } from "@/hooks/post/useDeleteAPost.hook";
-import { useUserFollower } from "@/hooks/user/useUserFollower";
+import { useUserFollower } from "@/hooks/user/useUserFollower.hook";
 import { UnfollowButton } from "../Home/UnfollowButton";
-import { useUserUnfollow } from "@/hooks/user/useUserUnfollower";
+import { useUserUnfollow } from "@/hooks/user/useUserUnfollower.hook";
+interface PostCardProps {
+  post: IPost;
+  idOfIndividualUser?: string;
+  followersId?: any[];
+}
 
-export const PostCard: FC<{ post: IPost }> = ({ post }) => {
-  const { mutate: handleLikeAPost } = useLikeAPost();
-  const { mutate: handleDislikeAPost } = useDislikeAPost();
+export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, followersId }) => {
+
+  const { mutate: handleLikeAPost, isPending: isLiking } = useLikeAPost();
+  const { mutate: handleDislikeAPost, isPending: isDisliking } = useDislikeAPost();
   const { mutate: handleComment } = useCreateAComment();
   const { data: comments, isLoading: loadingComments } = useGetAllCommentsOfASinglePost(post._id);
   const { mutate: deleteComment } = useDeleteAComment()
   const { mutate: handleLikeAComment } = useLikeAComment();
   const { mutate: handleDislikeAComment } = useDislikeAComment();
   const { mutate: handleEditAComment } = useEditAComment();
-  const { mutate: handleEditAPost, isPending } = useEditAPost();
-  const { mutate: handleDeleteAPost } = useDeleteAPost();
+  const { mutate: handleEditAPost, isPending: editPending } = useEditAPost();
+  const { mutate: handleDeleteAPost, isPending: deletePending } = useDeleteAPost();
   const { mutate: handleFollowAUser } = useUserFollower();
   const { mutate: handleUnfollowAUser } = useUserUnfollow();
 
   const [showComments, setShowComments] = useState<boolean>(false);
   const [userMembership, setUserMembership] = useState<string>('REGULAR');
   const { userId } = useAuth();
+  const checkCurrentUserIsFollowerOrNot = followersId?.includes(userId);
   const pathName = usePathname()
   const isProfileRoute = pathName === '/profile';
+  const isAdminRoute = pathName.includes("/admin");
+
 
   const [isEditing, setIsEditing] = useState(false);
   const [editorContent, setEditorContent] = useState(post.content);
@@ -73,8 +83,10 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
     const fetchUserDetails = async () => {
       try {
         const data = await detailsOfAUser();
-        setUserMembership(data.data.membership);
-        setIsFollowing(post.author.followers.includes(data.data._id));
+        if (data) {
+          setUserMembership(data?.data.membership);
+          setIsFollowing(post.author.followers.includes(data.data._id));
+        }
       } catch (error) {
         console.error(error)
       }
@@ -82,19 +94,25 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
     fetchUserDetails();
   }, [userId, post.author.followers]);
 
+
   const toggleComments = () => {
     if (userId) {
       setShowComments(!showComments);
     }
   };
 
+
   const handleLike = useCallback(() => {
-    handleLikeAPost(post._id);
-  }, [handleLikeAPost, post._id]);
+    if (!isLiking && userId) {
+      handleLikeAPost(post._id);
+    }
+  }, [handleLikeAPost, post._id, isLiking, userId]);
 
   const handleDislike = useCallback(() => {
-    handleDislikeAPost(post._id);
-  }, [handleDislikeAPost, post._id]);
+    if (!isDisliking && userId) {
+      handleDislikeAPost(post._id);
+    }
+  }, [handleDislikeAPost, post._id, isDisliking, userId]);
 
   const handleAddComment = useCallback((content: string) => {
     const payload = {
@@ -169,28 +187,32 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
     setIsFollowing(false);
   }
 
+
+
   return (
     <>
-      {isPending && <Loading />}
+      {(deletePending || editPending) && <Loading />}
       <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg shadow-black/20 ${jetbrains.className}`}>
         {
-          !isProfileRoute &&
+          !isProfileRoute
+          && !isAdminRoute &&
           <div className="absolute top-2 right-2 z-10">
             <PostBadge isPremium={post.isPremium} />
           </div>
         }
         {
-          isProfileRoute ? (
+          (isProfileRoute || isAdminRoute) ? (
             <div className="absolute top-2 rounded-lg bg-white right-14 z-10">
               <EditButton onEdit={handleEditClick} onDelete={handleDeletePost} />
             </div>
           ) : (
-            <div className="absolute top-14 right-2 z-10">
+            <div className="absolute top-14 right-2 z-10" >
+
               {
-                userId && (userId !== post.author.userId) && (
-                  !isFollowing
-                    ? < FollowButton onFollow={handleFollow} />
-                    : <UnfollowButton onUnfollow={handleUnfollow} />
+                userId && (userId !== post.author.userId) && (userId !== idOfIndividualUser) && (
+                  (isFollowing || checkCurrentUserIsFollowerOrNot)
+                    ? <UnfollowButton onUnfollow={handleUnfollow} />
+                    : < FollowButton onFollow={handleFollow} />
 
                 )
               }
@@ -205,11 +227,13 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
               <Link href={`/user/${post.author.userName}`}>
                 <AvatarImage src={post?.author?.imageURL} alt={post?.author?.userName} />
               </Link>
-              <AvatarFallback className="bg-teal-500 text-white">{post?.author.userName[0]}</AvatarFallback>
+              <AvatarFallback className="bg-teal-500  text-white">{post?.author.userName[0]}</AvatarFallback>
+
             </Avatar>
           }
           <div>
-            <Link href={`/user/${post.author.userName}`} className="font-semibold text-gray-100 text-base sm:text-lg">{post.author.userName}</Link>
+            {!isProfileRoute && <Link href={`/user/${post.author.userName}`} className="font-semibold text-gray-100 text-base sm:text-lg">{post.author.userName}</Link>
+            }
             <div className="flex items-center space-x-2 text-sm sm:text-base">
               <span className="text-teal-500">{post.petType}</span>
               <span className="text-teal-500">{post.postType}</span>
@@ -321,6 +345,7 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
             <Button
               variant="ghost"
               onClick={handleLike}
+              disabled={isLiking}
               className={`text-teal-500 hover:bg-teal-800 ${!userId && 'cursor-not-allowed'}`}
               title={`${!userId && 'please login'}`}
             >
@@ -330,6 +355,7 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
             <Button
               variant="ghost"
               onClick={handleDislike}
+              disabled={isDisliking}
               className={`text-teal-500 hover:bg-teal-800 ${!userId && 'cursor-not-allowed'}`}
               title={`${!userId && 'please login'}`}
             >
@@ -346,13 +372,6 @@ export const PostCard: FC<{ post: IPost }> = ({ post }) => {
               {comments?.length || 0}
             </Button>
           </div>
-
-          <Button
-            variant="ghost"
-            className="text-teal-500 hover:bg-teal-800"
-          >
-            <Share2 className="h-4 w-4" />
-          </Button>
         </CardFooter>
 
         {
