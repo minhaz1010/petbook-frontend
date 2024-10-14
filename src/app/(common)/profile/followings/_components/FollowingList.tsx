@@ -1,14 +1,18 @@
 "use client"
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { oswald } from '@/config/font';
-import { UserPlus, UserX, Users } from 'lucide-react';
-import { useFollowingList } from '@/hooks/user/useFollowingList.hook';
-import { useAuth } from '@clerk/nextjs';
 
-const FollowingsList = () => {
-  const { userId } = useAuth();
+import React from 'react'
+import Link from 'next/link'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { oswald } from '@/config/font'
+import { UserPlus, UserX, Users, ExternalLink } from 'lucide-react'
+import { useFollowingList } from '@/hooks/user/useFollowingList.hook'
+import { useAuth } from '@clerk/nextjs'
+
+
+
+export default function FollowingsList() {
+  const { userId } = useAuth()
   const { data: response } = useFollowingList()
 
   return (
@@ -33,16 +37,20 @@ const FollowingsList = () => {
           </div>
         ) : (
           <ul className="space-y-4">
-            {response?.data.followings.map((following, index) => (
+            {response?.data.followings.map((following, index: number) => (
               <li
                 key={following._id}
                 className="flex items-center space-x-4 bg-gray-800 p-3 rounded-lg hover:bg-gray-700 transition-all duration-300"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <Avatar className="border-2 border-blue-500 shadow-lg">
-                  <AvatarImage src={following.imageURL} alt={following.userName} />
-                  <AvatarFallback className="bg-blue-600 text-white">{following.userName[0]}</AvatarFallback>
-                </Avatar>
+                <Link href={`/user/${following.userName}`} className="group relative inline-block">
+                  <Avatar className="border-2 border-purple-500 shadow-lg transition-all duration-300 ease-in-out group-hover:border-purple-600 group-hover:shadow-xl">
+                    <AvatarImage src={following.imageURL} alt={following.userName} />
+                    <AvatarFallback className="bg-purple-600 text-white">{following.userName[0]}</AvatarFallback>
+                  </Avatar>
+                  <ExternalLink className="absolute bottom-0 right-0 w-4 h-4 text-purple-500 bg-white rounded-full p-0.5 shadow-md transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+                  <span className="sr-only">View {following.userName} profile</span>
+                </Link>
                 <span className="text-gray-200 font-medium">{following.userName}</span>
               </li>
             ))}
@@ -50,7 +58,5 @@ const FollowingsList = () => {
         )}
       </CardContent>
     </Card>
-  );
-};
-
-export default FollowingsList;
+  )
+}
