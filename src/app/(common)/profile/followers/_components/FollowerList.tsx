@@ -42,13 +42,15 @@ export default function FollowersList() {
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <Link href={`/user/${follower.userName}`} className="group relative inline-block">
-                  <Avatar className="border-2 border-purple-500 shadow-lg transition-all duration-300 ease-in-out group-hover:border-purple-600 group-hover:shadow-xl">
+                  <Avatar className="border-2 border-purple-500 shadow-lg transition-all duration-300 ease-in-out group-hover:border-purple-600 group-hover:shadow-xl group-hover:scale-105">
                     <AvatarImage src={follower.imageURL} alt={follower.userName} />
                     <AvatarFallback className="bg-purple-600 text-white">{follower.userName[0]}</AvatarFallback>
                   </Avatar>
                   <ExternalLink className="absolute bottom-0 right-0 w-4 h-4 text-purple-500 bg-white rounded-full p-0.5 shadow-md transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
                   <span className="sr-only">View {follower.userName} profile</span>
+                  <div className="absolute inset-0 border-2 border-purple-500 rounded-full animate-ping opacity-0 group-hover:opacity-75"></div>
                 </Link>
+
                 <span className="text-gray-200 font-medium">{follower.userName}</span>
               </li>
             ))}
