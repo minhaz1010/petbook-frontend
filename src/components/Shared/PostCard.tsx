@@ -6,14 +6,14 @@ import { usePathname } from 'next/navigation';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, ThumbsDown, ThumbsUp, Trash, Edit } from "lucide-react";
+import { MessageCircle, ThumbsDown, ThumbsUp, Trash, Edit, ExternalLink } from "lucide-react";
 import Image from 'rc-image';
 import 'rc-image/assets/index.css';
 import { IPost } from "@/types";
 import { useLikeAPost } from "@/hooks/post/useLikeAPost.hook";
 import { useDislikeAPost } from "@/hooks/post/useDislikeAPost.hook";
 import { useAuth } from "@clerk/nextjs";
-import { jetbrains } from "@/config/font";
+import { nunito } from "@/config/font";
 import Link from "next/link";
 import { useCreateAComment } from "@/hooks/comment/useCreateAComment.hook";
 import { useGetAllCommentsOfASinglePost } from "@/hooks/comment/useGetAllComment.hook";
@@ -300,7 +300,7 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
   return (
     <>
       {(deletePending || editPending) && <Loading />}
-      <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg shadow-black/20 ${jetbrains.className}`}>
+      <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg shadow-black/20 ${nunito.className}`}>
         {
           !isProfileRoute
           && !isAdminRoute &&
@@ -331,16 +331,27 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-700/50 p-3 sm:p-4">
           {
             !isProfileRoute &&
-            <Avatar className="border-2 w-12 h-12 sm:w-14 sm:h-14 border-teal-500">
-              <Link href={`/user/${post.author.userName}`}>
-                <AvatarImage src={post?.author?.imageURL} alt={post?.author?.userName} />
-              </Link>
-              <AvatarFallback className="bg-teal-500  text-white">{post?.author.userName[0]}</AvatarFallback>
-
-            </Avatar>
+            <Link
+              href={`/user/${post.author.userName}`}
+              className="group relative inline-block"
+            >
+              <Avatar className="border-2 w-12 h-12 sm:w-14 sm:h-14 border-teal-500 transition-all duration-300 ease-in-out group-hover:border-teal-600 group-hover:shadow-lg group-hover:scale-105">
+                <AvatarImage src={post.author.imageURL} alt={post.author.userName} />
+                <AvatarFallback className="bg-teal-500 text-white">
+                  {post.author.userName[0]}
+                </AvatarFallback>
+              </Avatar>
+              <ExternalLink className="absolute bottom-0 right-0 w-4 h-4 text-teal-500 bg-white rounded-full p-0.5 shadow-md transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+              <span className="sr-only">View {post.author.userName} profile</span>
+              <div className="absolute inset-0 border-2 border-teal-500 rounded-full animate-ping opacity-0 group-hover:opacity-75"></div>
+            </Link>
           }
           <div>
-            {!isProfileRoute && <Link href={`/user/${post.author.userName}`} className="font-semibold text-gray-100 text-base sm:text-lg">{post.author.userName}</Link>
+            {!isProfileRoute &&
+              <Link href={`/user/${post.author.userName}`} className="font-semibold text-gray-100 text-base sm:text-lg">
+                {post.author.userName}
+
+              </Link>
             }
             <div className="flex items-center space-x-2 text-sm sm:text-base">
               <span className="text-teal-500">{post.petType}</span>
