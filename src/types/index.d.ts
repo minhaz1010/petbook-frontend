@@ -37,8 +37,8 @@ export type TComments = IComment[];
 export interface IComment {
   _id:string;
   content: string;
-  author: Schema.Types.ObjectId;
-  post: Schema.Types.ObjectId;
+  author: IAuthor;
+  post: IPost;
   likes: number;
   dislikes: number;
 }

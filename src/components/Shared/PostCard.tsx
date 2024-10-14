@@ -53,7 +53,7 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
 
   const { mutate: handleLikeAPost, isPending: isLiking } = useLikeAPost();
   const { mutate: handleDislikeAPost, isPending: isDisliking } = useDislikeAPost();
-  const { mutate: handleComment } = useCreateAComment();
+  const { mutate: handleComment, isPending: createCommentPending } = useCreateAComment();
   const { data: comments, isLoading: loadingComments } = useGetAllCommentsOfASinglePost(post._id);
   const { mutate: deleteComment } = useDeleteAComment()
   const { mutate: handleLikeAComment } = useLikeAComment();
@@ -83,6 +83,8 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
   const [likeCount, setLikeCount] = useState(post.likes);
   const [dislikeCount, setDislikeCount] = useState(post.dislikes);
   const [userAction, setUserAction] = useState<'like' | 'dislike' | null>(null);
+  const [animateLike, setAnimateLike] = useState(false);
+  const [animateDislike, setAnimateDislike] = useState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -101,6 +103,21 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
     fetchUserDetails();
   }, [userId, post.author.followers]);
 
+
+
+  const handleAnimatedLike = () => {
+    // if (!userId) return;
+    setAnimateLike(true);
+    handleLike();
+    setTimeout(() => setAnimateLike(false), 300);
+  };
+
+  const handleAnimatedDislike = () => {
+    // if (!userId) return;
+    setAnimateDislike(true);
+    handleDislike();
+    setTimeout(() => setAnimateDislike(false), 300);
+  };
 
   const toggleComments = () => {
     if (userId) {
@@ -459,7 +476,49 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
           )}
         </CardContent>
 
+
         <CardFooter className="flex flex-wrap justify-between border-t border-gray-700/50 p-2 sm:p-3">
+          <div className="flex space-x-2 mb-2 sm:mb-0">
+            <Button
+              variant="ghost"
+              onClick={handleAnimatedLike}
+              disabled={isLiking || isDisliking}
+              className={`text-teal-500 hover:bg-teal-800 transition-all duration-300 ease-in-out
+            ${userAction === 'like' ? 'bg-blue-800' : ''}
+            ${!userId && 'cursor-not-allowed'}
+            ${animateLike ? 'scale-150' : 'scale-100'}
+          `}
+              title={!userId ? 'Please login' : ''}
+            >
+              <ThumbsUp className={`h-4 w-4 mr-1 transition-transform duration-300 ${animateLike ? 'scale-150' : 'scale-100'}`} />
+              {likeCount}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleAnimatedDislike}
+              disabled={isLiking || isDisliking}
+              className={`text-teal-500 hover:bg-teal-800 transition-all duration-300 ease-in-out
+            ${userAction === 'dislike' ? 'bg-red-800' : ''}
+            ${!userId && 'cursor-not-allowed'}
+            ${animateDislike ? 'scale-150' : 'scale-100'}
+          `}
+              title={!userId ? 'Please login' : ''}
+            >
+              <ThumbsDown className={`h-4 w-4 mr-1 transition-transform duration-300 ${animateDislike ? 'scale-150' : 'scale-100'}`} />
+              {dislikeCount}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={toggleComments}
+              className={`text-teal-500 hover:bg-teal-800 ${!userId && 'cursor-not-allowed'}`}
+              title={`${!userId ? 'Please login' : ''}`}
+            >
+              <MessageCircle className="h-4 w-4 mr-1" />
+              {comments?.length || 0}
+            </Button>
+          </div>
+        </CardFooter>
+        {/* <CardFooter className="flex flex-wrap justify-between border-t border-gray-700/50 p-2 sm:p-3">
           <div className="flex space-x-2 mb-2 sm:mb-0">
 
             <Button
@@ -495,19 +554,19 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
               {comments?.length || 0}
             </Button>
           </div>
-        </CardFooter>
+        </CardFooter> */}
 
         {
           showComments && (
             <div className="px-3 sm:px-4 py-2 sm:py-3">
               {loadingComments ? (
-
                 <p className="text-red-400">Loading comments...</p>
               ) : (
                 <Comments
                   postId={post._id}
                   comments={comments || []}
                   onAddComment={handleAddComment}
+                  createCommentPending={createCommentPending}
                   onLikeComment={handleLikeComment}
                   onDislikeComment={handleDislikeComment}
                   onEditComment={handleEditComment}
