@@ -5,6 +5,7 @@ import { ThumbsUp, ThumbsDown, Edit2, Trash2 } from "lucide-react";
 import { IComment } from "@/types";
 import { detailsOfAUser } from '@/services/user/user.services';
 import { useAuth } from '@clerk/nextjs';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface CommentsProps {
   postId: string;
@@ -13,7 +14,7 @@ interface CommentsProps {
   onLikeComment: (commentId: string) => void;
   onDislikeComment: (commentId: string) => void;
   onEditComment: (commentId: string, newContent: string) => void;
-  onDeleteComment: (commentId: string) => void; // New prop for delete
+  onDeleteComment: (commentId: string) => void;
 }
 
 export const Comments: FC<CommentsProps> = ({
@@ -43,7 +44,6 @@ export const Comments: FC<CommentsProps> = ({
     }
     userDetails();
   }, [])
-
 
   const handleSubmitComment = () => {
     if (newComment.trim()) {
@@ -82,8 +82,13 @@ export const Comments: FC<CommentsProps> = ({
       </div>
 
       {comments && comments.map((comment) => (
-        <div key={comment._id} className="flex items-start space-x-2 p-2 bg-gray-800 rounded-lg">
+        <div key={comment._id} className="flex items-start space-x-2 p-2  bg-gray-800 rounded-lg">
+          <Avatar className="w-8 h-8 mr-3">
+            <AvatarImage src={comment.author.imageURL} alt={comment.author.userName} />
+            <AvatarFallback>{comment.author.userName[0]}</AvatarFallback>
+          </Avatar>
           <div className="flex-grow">
+            <p className="text-sm font-semibold text-gray-200">{comment.author.userName}</p>
             {editingCommentId === comment._id ? (
               <div className="mt-1 flex items-center space-x-2">
                 <Input
@@ -96,15 +101,13 @@ export const Comments: FC<CommentsProps> = ({
             ) : (
               <p className="text-sm text-gray-300">{comment.content}</p>
             )}
-            <div className="mt-2 flex items-center space-x-2">
+            <div className="mt-2 -ml-2 flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onLikeComment(comment._id)}
-                // className="text-teal-500 hover:text-teal-400 hover:bg-teal-500/20"
                 className={`text-teal-500 hover:bg-teal-800 ${!userId && 'cursor-not-allowed'}`}
                 title={`${!userId && 'please login'}`}
-
               >
                 <ThumbsUp className="w-4 h-4 mr-1" />
                 {comment.likes}
@@ -118,8 +121,7 @@ export const Comments: FC<CommentsProps> = ({
                 <ThumbsDown className="w-4 h-4 mr-1" />
                 {comment.dislikes}
               </Button>
-              {/* Conditionally render edit and delete buttons */}
-              {comment.author === userIdOfCurrentUser && (
+              {comment.author._id === userIdOfCurrentUser && (
                 <>
                   <Button
                     variant="ghost"
