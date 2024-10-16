@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { oswald } from "@/config/font"
@@ -32,9 +31,9 @@ export default function UserProfile({
             <CardTitle className="text-2xl font-bold text-gray-300">{fullName}</CardTitle>
             <p className="text-muted-foreground text-gray-300">@{userName}</p>
           </div>
-          <div className="flex space-x-2">
-            <Badge variant="secondary">{role}</Badge>
-            <Badge variant="outline" className="text-gray-300">{membership}</Badge>
+          <div className="flex flex-col justify-center items-center space-x-2">
+            <span className="text-gray-300  ">Role: {role}</span>
+            <span className="text-gray-300  ">Status: {membership}</span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4 ">

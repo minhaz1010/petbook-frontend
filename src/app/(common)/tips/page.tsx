@@ -11,7 +11,7 @@ const StoryPage = () => {
   return (
     <Suspense fallback={<CardLoader />}>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <div className='container mx-auto w-1/2'>
+        <div className='container mx-auto lg:w-[40%] w-full'>
           <Tips />
         </div>
       </HydrationBoundary>

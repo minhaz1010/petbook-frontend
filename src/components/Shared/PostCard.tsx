@@ -13,7 +13,7 @@ import { IPost } from "@/types";
 import { useLikeAPost } from "@/hooks/post/useLikeAPost.hook";
 import { useDislikeAPost } from "@/hooks/post/useDislikeAPost.hook";
 import { useAuth } from "@clerk/nextjs";
-import { nunito } from "@/config/font";
+import { nunito, roboto } from "@/config/font";
 import Link from "next/link";
 import { useCreateAComment } from "@/hooks/comment/useCreateAComment.hook";
 import { useGetAllCommentsOfASinglePost } from "@/hooks/comment/useGetAllComment.hook";
@@ -317,7 +317,7 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
   return (
     <>
       {(deletePending || editPending) && <Loading />}
-      <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg shadow-black/20 ${nunito.className}`}>
+      <Card className={`mb-4 relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg shadow-black/20 ${roboto.className}`}>
         {
           !isProfileRoute
           && !isAdminRoute &&
@@ -358,7 +358,7 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
                   {post.author.userName[0]}
                 </AvatarFallback>
               </Avatar>
-              <ExternalLink className="absolute bottom-0 right-0 w-4 h-4 text-teal-500 bg-white rounded-full p-0.5 shadow-md transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+              <ExternalLink className="absolute bottom-0 right-0 w-4 h-4 text-green-500 bg-white rounded-full p-0.5 shadow-md transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
               <span className="sr-only">View {post.author.userName} profile</span>
               <div className="absolute inset-0 border-2 border-teal-500 rounded-full animate-ping opacity-0 group-hover:opacity-75"></div>
             </Link>
@@ -371,8 +371,8 @@ export const PostCard: FC<PostCardProps> = ({ post, idOfIndividualUser, follower
               </Link>
             }
             <div className="flex items-center space-x-2 text-sm sm:text-base">
-              <span className="text-teal-500">{post.petType}</span>
-              <span className="text-teal-500">{post.postType}</span>
+              <span className="text-[#4FFFB0]">{post.petType}</span>
+              <span className="text-[#4FFFB0]">{post.postType}</span>
             </div>
           </div>
           {isProfileRoute && (

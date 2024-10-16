@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import PricingCards from './_components/PricingCard'
-import { oswald } from '@/config/font'
+import { roboto } from '@/config/font'
 import { auth } from '@clerk/nextjs/server'
 import { getAllPayment } from '@/services/payment/payment.services'
 import { IPayment } from '@/types'
@@ -17,7 +17,7 @@ export default async function PricingPage() {
   const premiumMember = paymentDetails.data.find((payment: IPayment) => payment.userId === userId);
 
   return (
-    <div className={`container mx-auto px-4 py-16 ${oswald.className}`}>
+    <div className={`container mx-auto px-4  py-16 ${roboto.className}`}>
       <h1 className="text-4xl font-bold text-center text-white mb-8">
         {premiumMember ? 'You Are a Premium Member!' : 'Choose Your Pet Book Plan'}
       </h1>

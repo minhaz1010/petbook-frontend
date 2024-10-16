@@ -5,14 +5,14 @@ import { jetbrains } from '@/config/font'
 function PostCardSkeleton() {
   return (
     <Card className={`mb-4  relative border-0 bg-gradient-to-b from-gray-900 to-gray-800 transition-all duration-300 shadow-lg shadow-black/20 ${jetbrains.className}`}>
-      <div className="absolute top-2 right-2 z-10">
+      <div className="absolute top-2 right-2 z-10 ">
         <Skeleton className="h-8 w-24 rounded-full bg-gray-700" />
       </div>
 
-      <CardHeader className="flex flex-row items-center space-x-4 border-b border-gray-700/50">
-        <Skeleton className="h-14 w-14 rounded-full bg-gray-700" />
+      <CardHeader className="flex flex-row items-center space-x-4 border-b  border-gray-700/50">
+        <Skeleton className="h-14 w-14 rounded-full bg-gray-700 " />
         <div className="space-y-2">
-          <Skeleton className="h-5 w-32 bg-gray-700" />
+          <Skeleton className="h-5 w-32 bg-gray-700 " />
           <div className="flex items-center space-x-2">
             <Skeleton className="h-4 w-16 bg-gray-700" />
             <Skeleton className="h-4 w-16 bg-gray-700" />
@@ -41,7 +41,7 @@ function PostCardSkeleton() {
 }
 const CardLoader = () => {
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className=" max-w-2xl mx-auto p-4">
       {[1, 2, 3].map((n) => (
         <PostCardSkeleton key={n} />
       ))}

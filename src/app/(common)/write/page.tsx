@@ -10,7 +10,7 @@ import PremiumSelector from './_components/PremiumSelector';
 import QuillEditor from '../../../components/Shared/QuillEditor';
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import Loading from '@/components/Shared/Loading';
-import { jetbrains } from '@/config/font';
+import { jetbrains, roboto } from '@/config/font';
 import { useCreatePost } from '@/hooks/post/useCreatePost.hook';
 import { useRouter } from 'next/navigation';
 
@@ -94,7 +94,7 @@ export default function ResponsiveEditor() {
   const isFormValid = postData.title.trim() && postData.content.trim() && imageData && !error;
 
   return (
-    <div className={`min-h-screen sm:-mt-36 md:mt-0 w-full p-4 md:p-6 lg:p-8 relative ${jetbrains.className}`}>
+    <div className={`min-h-screen sm:-mt-36 md:mt-0 w-full p-4 md:p-6 lg:p-8 relative ${roboto.className}`}>
       <div className="max-w-4xl bg-white/5 backdrop-blur-md shadow-lg rounded-lg p-6 mx-auto">
         <h1 className="text-3xl font-bold text-white mb-6">Create a New Post</h1>
 
@@ -140,7 +140,7 @@ export default function ResponsiveEditor() {
               {({ open }) => (
                 <button
                   onClick={() => open()}
-                  className="w-full h-24 flex flex-col items-center justify-center gap-2 text-gray-500 hover:text-gray-700 transition-colors cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md"
+                  className="w-full h-24 flex flex-col items-center justify-center gap-2 text-white-500 hover:text-gray-700 transition-colors cursor-pointer bg-slate-500 hover:bg-gray-500 rounded-md"
                 >
                   <Camera size={40} />
                   <p>Click to upload image</p>

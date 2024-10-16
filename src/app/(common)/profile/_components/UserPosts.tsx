@@ -30,7 +30,7 @@ export default function UserPosts({ posts }: UserPostsProps) {
 
   return (
     <div className="space-y-6 container mx-auto size-full lg:size-[40%]">
-      <h2 className="text-2xl font-bold text-center text-[#00c9c8] mb-4">Total Posts : {posts.length}</h2>
+      <h2 className="text-2xl font-bold text-center text-[#34acac] mb-4">Total Posts : {posts.length}</h2>
       {currentPosts.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}

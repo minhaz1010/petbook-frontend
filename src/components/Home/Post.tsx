@@ -67,7 +67,7 @@ const Post = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 container mx-auto lg:w-[71%] w-full">
       <div className="mb-4 flex flex-col sm:flex-row gap-2">
         <div className="relative flex-grow">
           <Input
@@ -90,10 +90,11 @@ const Post = () => {
           </SelectContent>
         </Select>
       </div>
-
-      {filteredAndSortedPosts.map((post: IPost) => (
-        <PostCard key={post._id} post={post} />
-      ))}
+      <section className=''>
+        {filteredAndSortedPosts.map((post: IPost) => (
+          <PostCard key={post._id} post={post} />
+        ))}
+      </section>
 
       {isFetchingNextPage && (
         <div className="flex justify-center my-4">

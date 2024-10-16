@@ -50,7 +50,7 @@ export const PostContent: React.FC<PostContentProps> = ({ content, isPremium, us
                 setIsExpanded(!isExpanded)
               }
             }}
-            className={`mt-2 text-teal-400 hover:text-teal-300 p-0 ${!userId ? 'cursor-not-allowed opacity-50' : ''}`}
+            className={`mt-2 text-[#00A86B] hover:text-teal-400 p-0 ${!userId ? 'cursor-not-allowed opacity-50' : ''}`}
             title={!userId ? 'Please login' : ''}
           >
             {isExpanded ? 'Show Less' : 'Read More'}

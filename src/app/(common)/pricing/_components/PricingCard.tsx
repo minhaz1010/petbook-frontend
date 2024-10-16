@@ -186,7 +186,7 @@ export default function PricingCards({ premiumMember }: Props) {
     <>
       <div className="grid md:grid-cols-2 gap-8">
         {plans.map((plan) => (
-          <Card key={plan.name} className="flex flex-col">
+          <Card key={plan.name} className="flex bg-black/60 text-white flex-col">
             <CardHeader>
               <CardTitle>{plan.name}</CardTitle>
               <CardDescription>Perfect for {plan.duration} of pet journaling</CardDescription>
@@ -205,8 +205,8 @@ export default function PricingCards({ premiumMember }: Props) {
                 ))}
               </ul>
             </CardContent>
-            <CardFooter>
-              <Button className="w-full "
+            <CardFooter className=''>
+              <Button className="w-full bg-slate-200 text-black hover:bg-slate-400 hover:text-white "
                 disabled={!userId || premiumMember}
                 title={!userId ? 'please login' : ''}
                 onClick={() => handlePayment(plan)}>

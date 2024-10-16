@@ -8,7 +8,7 @@ const CommonLayout = ({ children }: Props) => {
   return (
     <div>
       <Navbar />
-      <main>{children}</main>
+      <main >{children}</main>
     </div>
   )
 }

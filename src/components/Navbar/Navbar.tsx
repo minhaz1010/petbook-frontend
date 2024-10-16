@@ -43,13 +43,13 @@ const NavLink: React.FC<NavLinkProps> = ({
   return (
     <Link
       href={href}
-      className={`${className} ${isActive ? "text-blue-600" : "text-gray-300"
-        } hover:text-blue-500 transition-all duration-300 relative group flex items-center`}
+      className={`${className} ${isActive ? "text-green-500" : "text-gray-300"
+        } hover:text-green-600 transition-all duration-300 relative group flex items-center`}
       onClick={onClick}
     >
       <span className="mr-2">{icon}</span>
       {children}
-      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300" />
+      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-300 group-hover:w-full transition-all duration-300" />
     </Link>
   );
 };
@@ -58,6 +58,8 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isSignedIn, isLoaded } = useAuth();
   const [role, setRole] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
 
   useEffect(() => {
     const fetchRole = async () => {
@@ -70,6 +72,12 @@ const Navbar: React.FC = () => {
     };
 
     fetchRole();
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (!isLoaded) {
@@ -81,7 +89,8 @@ const Navbar: React.FC = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className={` overflow-x-hidden sticky top-0 z-50 ${oswald.className}`}>
+    <nav className={` overflow-x-hidden sticky top-0 z-50 transition-all ${oswald.className} duration-300 ${isScrolled ? 'bg-black/35 backdrop-blur-xl' : 'bg-transparent'
+      }`} >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -215,7 +224,7 @@ const Navbar: React.FC = () => {
           : "opacity-0 -translate-y-full pointer-events-none h-16"
           }`}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg rounded-b-lg">
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3  shadow-lg rounded-b-lg">
           <NavLink
             href="/"
             className="block px-3 py-2 rounded-md text-xl font-medium transform hover:translate-x-2 transition-transform duration-200"
