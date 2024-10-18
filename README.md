@@ -68,6 +68,9 @@ Pet Care Tips & Stories is a comprehensive web application designed to connect p
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
+## ✌️ Backend Repository
+[Backend-Repo](https://github.com/minhaz1010/Pet-Social-Backend)
+
 ## 🌟 Key Features Explained
 
 ### Server-Side Rendering and Hydration
